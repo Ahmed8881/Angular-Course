@@ -3,42 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Course - Chapter Manager</title>
+    <title>HTML Course - Professional Learning Platform</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>Loading Course Content...</p>
+        </div>
+    </div>
+
     <div class="container">
-        <header>
-            <h1>HTML Course</h1>
-            <p>Navigate through 196 chapters</p>
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h1>HTML Mastery Course</h1>
+                        <p>Professional Web Development Training</p>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <div class="progress-overview">
+                        <span id="progressText">0 of 196 chapters</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
         </header>
 
         <div class="main-content">
             <aside class="sidebar">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search chapters...">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-list"></i> Course Chapters</h3>
+                    <div class="sidebar-controls">
+                        <button class="collapse-btn" id="collapseBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
                 </div>
+                
+                <div class="search-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search chapters...">
+                        <button class="clear-search" id="clearSearch">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="basics">Basics</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="projects">Projects</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="chapter-list" id="chapterList">
                     <!-- Chapters will be loaded here -->
+                </div>
+
+                <div class="sidebar-footer">
+                    <div class="study-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="studyTime">0h 0m</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="completedChapters">0 completed</span>
+                        </div>
+                    </div>
                 </div>
             </aside>
 
             <main class="content">
-                <div class="chapter-header">
-                    <h2 id="chapterTitle">Welcome to HTML Course</h2>
-                    <div class="chapter-nav">
-                        <button id="prevBtn" class="nav-btn">← Previous</button>
-                        <span id="chapterCounter">Chapter 1 of 196</span>
-                        <button id="nextBtn" class="nav-btn">Next →</button>
+                <div class="content-header">
+                    <div class="chapter-info">
+                        <div class="chapter-badge" id="chapterBadge">Chapter 1</div>
+                        <h2 id="chapterTitle">Welcome to HTML Course</h2>
+                        <div class="chapter-meta">
+                            <span class="difficulty" id="chapterDifficulty">Beginner</span>
+                            <span class="duration" id="chapterDuration">5 min read</span>
+                            <span class="category" id="chapterCategory">Introduction</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chapter-actions">
+                        <button class="action-btn bookmark-btn" id="bookmarkBtn">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                        <button class="action-btn fullscreen-btn" id="fullscreenBtn">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="action-btn print-btn" id="printBtn">
+                            <i class="fas fa-print"></i>
+                        </button>
                     </div>
                 </div>
+
+                <div class="chapter-navigation">
+                    <button id="prevBtn" class="nav-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>Previous</span>
+                    </button>
+                    
+                    <div class="chapter-progress">
+                        <div class="progress-info">
+                            <span id="chapterCounter">Chapter 1 of 196</span>
+                            <div class="chapter-progress-bar">
+                                <div class="chapter-progress-fill" id="chapterProgressFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="nextBtn" class="nav-btn next-btn">
+                        <span>Next</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
                 <div class="chapter-content" id="chapterContent">
-                    <p>Select a chapter from the sidebar to get started with your HTML course.</p>
+                    <div class="welcome-content">
+                        <div class="welcome-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Welcome to HTML Mastery Course</h3>
+                        <p>Select a chapter from the sidebar to begin your journey into web development. This comprehensive course covers everything from basic HTML structure to advanced techniques.</p>
+                        <div class="quick-start">
+                            <button class="cta-btn" id="startFirstChapter">
+                                <i class="fas fa-play"></i>
+                                Start First Chapter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-footer">
+                    <div class="chapter-completion">
+                        <button class="complete-btn" id="completeBtn">
+                            <i class="fas fa-check"></i>
+                            Mark as Complete
+                        </button>
+                    </div>
+                    
+                    <div class="chapter-rating">
+                        <span>Rate this chapter:</span>
+                        <div class="stars" id="chapterRating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
+
+        <div class="floating-toc" id="floatingTOC">
+            <button class="toc-toggle" id="tocToggle">
+                <i class="fas fa-list-ul"></i>
+            </button>
+            <div class="toc-content" id="tocContent">
+                <!-- Table of contents will be generated here -->
+            </div>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
