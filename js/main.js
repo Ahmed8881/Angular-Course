@@ -6,12 +6,11 @@ let bookmarkedChapters = new Set();
 
 // Sample chapter data (replace with your actual data source)
 const chapters = [
-    { id: 1, title: "Introduction to HTML", category: "basics", difficulty: "Beginner", duration: "5 min", completed: false },
-    { id: 2, title: "HTML Document Structure", category: "basics", difficulty: "Beginner", duration: "8 min", completed: false },
-    { id: 3, title: "HTML Elements and Tags", category: "basics", difficulty: "Beginner", duration: "10 min", completed: false },
+    { id: 1, title: "Introduction to Angular", category: "basics", difficulty: "Beginner", duration: "10 min", completed: false },
+    { id: 2, title: "Angular Components", category: "basics", difficulty: "Beginner", duration: "15 min", completed: false },
+    { id: 3, title: "Angular Services", category: "intermediate", difficulty: "Intermediate", duration: "12 min", completed: false },
     // Add more chapters as needed
 ];
-
 // Function to load markdown content from file
 async function loadChapterContent(chapterPath) {
     try {
@@ -27,28 +26,62 @@ async function loadChapterContent(chapterPath) {
     }
 }
 
-// Function to convert basic markdown to HTML
+
+//  function to convert markdown to HTML
 function markdownToHTML(markdown) {
     if (!markdown) return '';
     
-    return markdown
-        // Headers
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    let html = markdown
+        // Headers with emojis
+        .replace(/^### (.*$)/gim, '<h3 class="content-heading-3">$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2 class="content-heading-2">$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1 class="content-heading-1">$1</h1>')
+        
+        // Tables
+        .replace(/\|(.+)\|\r?\n\|[-\s\|:]+\|\r?\n([\s\S]*?)(?=\r?\n\r?\n|$)/gm, (match, header, body) => {
+            const headerCells = header.split('|').filter(cell => cell.trim()).map(cell => `<th>${cell.trim()}</th>`).join('');
+            const bodyRows = body.split('\n').filter(row => row.includes('|')).map(row => {
+                const cells = row.split('|').filter(cell => cell.trim()).map(cell => `<td>${cell.trim()}</td>`).join('');
+                return `<tr>${cells}</tr>`;
+            }).join('');
+            return `<table class="content-table"><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table>`;
+        })
+        
+        // Lists
+        .replace(/^\- (.+$)/gim, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/gims, '<ul class="content-list">$1</ul>')
+        
         // Bold
-        .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+        .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
         // Italic
-        .replace(/\*(.*)\*/gim, '<em>$1</em>')
-        // Code blocks
-        .replace(/```([\s\S]*?)```/gim, '<pre><code>$1</code></pre>')
+        .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+        
+        // Code blocks with syntax highlighting
+        .replace(/```(\w+)?\r?\n([\s\S]*?)```/gim, '<pre class="code-block"><code class="language-$1">$2</code></pre>')
+        .replace(/```\r?\n([\s\S]*?)```/gim, '<pre class="code-block"><code>$1</code></pre>')
+        
         // Inline code
-        .replace(/`([^`]*)`/gim, '<code>$1</code>')
+        .replace(/`([^`]+)`/gim, '<code class="inline-code">$1</code>')
+        
         // Links
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2">$1</a>')
-        // Line breaks
-        .replace(/\n/gim, '<br>');
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+        
+        // Horizontal rules
+        .replace(/^---$/gm, '<hr class="content-divider">')
+        
+        // Line breaks and paragraphs
+        .replace(/\r?\n\r?\n/gm, '</p><p>')
+        .replace(/\r?\n/gm, '<br>');
+    
+    // Wrap in paragraphs and clean up
+    html = '<p>' + html + '</p>';
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p>(<h[1-6]|<table|<ul|<pre|<hr)/g, '$1');
+    html = html.replace(/(<\/h[1-6]>|<\/table>|<\/ul>|<\/pre>|<hr[^>]*>)<\/p>/g, '$1');
+    
+    return html;
 }
+
 
 // Function to update chapter header information
 function updateChapterHeader(chapterData) {
