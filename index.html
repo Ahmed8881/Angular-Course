@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Course - Chapter Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HTML Course</h1>
+            <p>Navigate through 196 chapters</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search chapters...">
+                </div>
+                <div class="chapter-list" id="chapterList">
+                    <!-- Chapters will be loaded here -->
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="chapter-header">
+                    <h2 id="chapterTitle">Welcome to HTML Course</h2>
+                    <div class="chapter-nav">
+                        <button id="prevBtn" class="nav-btn">← Previous</button>
+                        <span id="chapterCounter">Chapter 1 of 196</span>
+                        <button id="nextBtn" class="nav-btn">Next →</button>
+                    </div>
+                </div>
+                <div class="chapter-content" id="chapterContent">
+                    <p>Select a chapter from the sidebar to get started with your HTML course.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
