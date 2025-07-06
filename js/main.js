@@ -288,16 +288,31 @@ function setupCategoryFilter() {
 }
 
 // Function to handle theme toggle
+// Function to handle theme toggle
 function setupThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     
     if (themeToggle) {
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', currentTheme);
+        
+        // Update icon based on current theme
+        const icon = themeToggle.querySelector('i');
+        if (icon) {
+            icon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        
         themeToggle.addEventListener('click', () => {
-            document.body.toggleAttribute('data-theme', 'dark');
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
             const icon = themeToggle.querySelector('i');
             if (icon) {
-                icon.className = document.body.hasAttribute('data-theme') ? 
-                    'fas fa-sun' : 'fas fa-moon';
+                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
             }
         });
     }
